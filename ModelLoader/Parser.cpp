@@ -16,8 +16,8 @@ vector< glm::vec3 > temp_vN;
 
 // Create vectors to store and hold the object vectors after parsing
 vector< glm::vec3 > vectors;
-vector< glm::vec2 > vT;
-vector<glm::vec3 > vN;
+vector< glm::vec2 > vectorTextures;
+vector< glm::vec3 > vectorNormals;
 
 void Parser::parseObj()
 {
@@ -70,6 +70,8 @@ void Parser::parseObj()
 
 			// Pass the data from the line to the vector
 			line >> temp_v.x >> temp_v.y >> temp_v.z;
+
+			cout << word << ": " << temp_v.x << " " <<temp_v.y << " " << temp_v.z << endl;
 
 			// Push back the vector to the vector of vectors
 			vectors.push_back(temp_v);
