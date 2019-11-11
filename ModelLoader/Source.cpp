@@ -9,6 +9,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	glViewport(0, 0, width, height);
 }
 
+
+
+// Method to Initialise the render window
+
 GLFWwindow* init(int width, int height)
 {
 	// Initialises the window
@@ -47,6 +51,19 @@ GLFWwindow* init(int width, int height)
 	return window;
 }
 
+// Input processing
+void processInput(GLFWwindow* window)
+{
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+	{
+		// Closes the rendering window if the escape key is pressed
+		glfwSetWindowShouldClose(window, true);
+
+		// Output key press to console
+		std::cout << "User pressed ESCAPE key, render window closed." << std::endl;
+
+	} // End if
+}
 
 int main() {
 
@@ -56,11 +73,20 @@ int main() {
 	// Beginning of render loop
 	while (!glfwWindowShouldClose(window))
 	{
+		// Check if any keys are being pressed during the render loop
+		processInput(window);
+
+		// Render commands here -->
+
 		// Swap colour buffer
 		glfwSwapBuffers(window);
 
 		// Check triggered events (Such as keypresses)
 		glfwPollEvents();
 	} // End render loop
+
+	// Termiante GLFW
+	glfwTerminate();
+	return 0;
 
 }
