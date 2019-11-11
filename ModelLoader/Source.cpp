@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/freeglut.h>
 #include <iostream>
+#include "Parser.h"
 
 // Resizes the openGL viewport if the user changes the size of the window
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -16,6 +17,10 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 GLFWwindow* init(int width, int height)
 {
+
+	// Set glewExperimental to true
+	glewExperimental = GL_TRUE;
+
 	// Initialises the window
 	glfwInit();
 
@@ -46,7 +51,6 @@ GLFWwindow* init(int width, int height)
 	glViewport(0, 0, width, height);
 
 	// Initialises GLEW; Sets up pointers to OpenGL functions
-	glewExperimental = GL_TRUE;
 	glewInit();
 
 	return window;
@@ -82,6 +86,10 @@ int main() {
 
 	// Calls method 'init' to create the window
 	GLFWwindow* window = init(1080, 720);
+
+	// Parse .obj file
+	Parser parser;
+	parser.parseObj();
 
 	// Beginning of render loop
 	while (!glfwWindowShouldClose(window))
