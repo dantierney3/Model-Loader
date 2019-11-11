@@ -7,7 +7,8 @@
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 {
 	glViewport(0, 0, width, height);
-}
+
+} // End framebuffer_size_callback
 
 
 
@@ -49,10 +50,11 @@ GLFWwindow* init(int width, int height)
 	glewInit();
 
 	return window;
-}
+
+} // End init
 
 // Input processing
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow *window)
 {
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
@@ -63,7 +65,18 @@ void processInput(GLFWwindow* window)
 		std::cout << "User pressed ESCAPE key, render window closed." << std::endl;
 
 	} // End if
-}
+
+} // End processInput
+
+// Set the background color of the render window
+void renderWindowColor(GLFWwindow* window)
+{
+
+	// Sets the color of the window to the specified color
+	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+} // End renderWindowColor
 
 int main() {
 
@@ -77,6 +90,7 @@ int main() {
 		processInput(window);
 
 		// Render commands here -->
+		renderWindowColor(window);
 
 		// Swap colour buffer
 		glfwSwapBuffers(window);
@@ -89,4 +103,4 @@ int main() {
 	glfwTerminate();
 	return 0;
 
-}
+} // End main
