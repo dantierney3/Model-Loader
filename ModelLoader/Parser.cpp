@@ -71,10 +71,38 @@ void Parser::parseObj()
 			// Pass the data from the line to the vector
 			line >> temp_v.x >> temp_v.y >> temp_v.z;
 
+			// Debug output to make sure that the file is being loaded correctly
 			cout << word << ": " << temp_v.x << " " <<temp_v.y << " " << temp_v.z << endl;
 
-			// Push back the vector to the vector of vectors
+			// Push back the vector to the vector 'vectors'
 			vectors.push_back(temp_v);
+		}
+		else if (word == "vt")
+		{
+			// Create temporary vector
+			glm::vec2 temp_vt;
+
+			// Pass the data from the line to the vector
+			line >> temp_vt.x >> temp_vt.y;
+
+			// Debug output to make sure that the file is being loaded correctly
+			cout << word << ": " << temp_vt.x << " " << temp_vt.y << endl;
+			// Push bacl the vector to the vector 'vectorTextures'
+			vectorTextures.push_back(temp_vt);
+		}
+		else if (word == "vn")
+		{
+			// Create a temporary vector
+			glm::vec3 temp_vn;
+
+			// Pass the data from the line to the vector
+			line >> temp_vn.x >> temp_vn.y >> temp_vn.z;
+
+			// Debug output to make sure the file is being loaded correctly
+			cout << word << ": " << temp_vn.x << " " << temp_vn.y << " " << temp_vn.z << endl;
+
+			// Push back the vector to the vector 'vectorNormals'
+			vectorNormals.push_back(temp_vn);
 		}
 	}
 	
