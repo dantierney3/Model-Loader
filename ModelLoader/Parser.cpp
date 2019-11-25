@@ -104,6 +104,14 @@ void Parser::parseObj()
 			// Push back the vector to the vector 'vectorNormals'
 			vectorNormals.push_back(temp_vn);
 		}
+		else if (word == "f")
+		{
+
+		}
+		else
+		{
+			cout << "Incompatible file type!" << endl;
+		}
 	}
 	
 }
