@@ -8,6 +8,14 @@
 
 using namespace std;
 
+// Stores each face
+struct Face
+{
+	std::vector<int> vertexIndex;
+	std::vector<int> textureIndex;
+	std::vector<int> normalIndex;
+};
+
 
 // Create temp vectors to store the contents of the .obj file
 vector< unsigned int > v, vI, vN;
@@ -49,13 +57,13 @@ void Parser::parseObj()
 	} while (fileLoad == false); // Will retry file load if the file was not found / open
 
 	// Create a value variable to store a line from the file
-	string value;
+	string currentLine;
 
 	// Parsing Loop
-	while (getline(objFile, value)) // Takes a line from the file and stores it in 'value'
+	while (getline(objFile, currentLine)) // Takes a line from the file and stores it in 'value'
 	{
 		// Passes the line from the file to a stringstream 'line'
-		stringstream line(value);
+		stringstream line(currentLine);
 
 		// 'word' variable used to store the first word of the line from the stream
 		string word;
@@ -106,7 +114,35 @@ void Parser::parseObj()
 		}
 		else if (word == "f")
 		{
+			Face face;
 
+			// Create temp arrays for indexes
+			int vertexIndex[3], uvIndex[3], normalIndex[3];
+
+			// Determine the set size of the f values
+
+			std::string temp;	// Create string to store the first series of f values
+			std::string value;
+			while (!line.eof()) // Check that we arent at the end of the line
+			{
+				line >> temp; // Put the next "word" from line into the temp string
+				if (!temp.empty()) // Check that temp isnt empty
+				{
+					std::istringstream item(temp);
+					getline(item, value, '/');
+					face.vertexIndex.push_back(std::stoi(value) - 1);
+					getline(item, value, '/');
+					if (!value.empty())		// Check if the face has texture coords
+					{
+						face.textureIndex.push_back(std::stoi(value) - 1);
+					}
+					if (getline(item, value, '/'))
+					{
+						face.normalIndex.push_back(std::stoi(value) - 1);
+					} 
+				}
+			}
+			
 		}
 		else
 		{
