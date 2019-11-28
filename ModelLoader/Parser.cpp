@@ -16,9 +16,8 @@ struct Face
 	std::vector<int> normalIndex;
 };
 
-
 // Create temp vectors to store the contents of the .obj file
-vector< unsigned int > v, vI, vN;
+vector< unsigned int > out_V, out_TI, out_NI;
 vector< glm::vec2 > temp_vT;
 vector< glm::vec3 > temp_vN;
 
@@ -26,6 +25,36 @@ vector< glm::vec3 > temp_vN;
 vector< glm::vec3 > vectors;
 vector< glm::vec2 > vectorTextures;
 vector< glm::vec3 > vectorNormals;
+
+void storeFace(Face face) // Stores the face data in the main array
+{
+
+	// variables for loops
+	int vICount;
+	int tICount;
+	int nICount;
+
+	// set up variables for loops
+	vICount = face.vertexIndex.size();
+	tICount = face.textureIndex.size();
+	nICount = face.normalIndex.size();
+
+	for (int i = 0; i < vICount; i++) // Stores the vertex index of the current face
+	{
+		unsigned int vertexIndex = face.vertexIndex[i];
+		out_V.push_back(vertexIndex);
+	}
+	for (int i = 0; i < tICount; i++)	// Stores the texture index for the current face
+	{
+		unsigned int textureIndex = face.textureIndex[i];
+		out_TI.push_back(textureIndex);
+	}
+	for (int i = 0; i < nICount; i++)	// Stores the normal index for the current face
+	{
+		unsigned int normalIndex = face.normalIndex[i];
+		out_NI.push_back(normalIndex);
+	}
+}
 
 void Parser::parseObj()
 {
@@ -123,6 +152,12 @@ void Parser::parseObj()
 
 			std::string temp;	// Create string to store the first series of f values
 			std::string value;
+
+			//Debug output to show f values in command line
+			string lineString;
+			lineString = line.str();
+			cout << word << ": " << lineString << endl;
+
 			while (!line.eof()) // Check that we arent at the end of the line
 			{
 				line >> temp; // Put the next "word" from line into the temp string
@@ -136,7 +171,7 @@ void Parser::parseObj()
 					{
 						face.textureIndex.push_back(std::stoi(value) - 1);
 					}
-					if (getline(item, value, '/'))
+					if (getline(item, value, '/')) // Check if the face has normals
 					{
 						face.normalIndex.push_back(std::stoi(value) - 1);
 					} 
