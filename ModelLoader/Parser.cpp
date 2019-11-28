@@ -26,6 +26,11 @@ vector< glm::vec3 > vectors;
 vector< glm::vec2 > vectorTextures;
 vector< glm::vec3 > vectorNormals;
 
+// Output vectors
+vector< glm::vec3 > vertex_out;
+vector< glm::vec2 > texture_out;
+vector< glm::vec3 > normal_out;
+
 void storeFace(Face face) // Stores the face data in the main array
 {
 
@@ -39,21 +44,37 @@ void storeFace(Face face) // Stores the face data in the main array
 	tICount = face.textureIndex.size();
 	nICount = face.normalIndex.size();
 
+	// Setup temp variables to store vectors
+	glm::vec3 temp_vector;
+	glm::vec2 temp_texture;
+	glm::vec3 temp_normal;
+
 	for (int i = 0; i < vICount; i++) // Stores the vertex index of the current face
 	{
-		unsigned int vertexIndex = face.vertexIndex[i];
-		out_V.push_back(vertexIndex);
+		unsigned int vertexIndex = face.vertexIndex[i];		// Get the index
+		temp_vector = vectors[vertexIndex];					// Get the vector at the index
+		vertex_out.push_back(temp_vector);					// Push vector to output array
+		cout << "Vector stored in output array" << endl;
 	}
 	for (int i = 0; i < tICount; i++)	// Stores the texture index for the current face
 	{
-		unsigned int textureIndex = face.textureIndex[i];
-		out_TI.push_back(textureIndex);
+		unsigned int textureIndex = face.textureIndex[i];	// Get the index
+		temp_texture = vectorTextures[textureIndex];		// Get the Texture at the index
+		texture_out.push_back(temp_texture);				// Push texture to output array
+		cout << "Texture stoed in output array" << endl;
 	}
 	for (int i = 0; i < nICount; i++)	// Stores the normal index for the current face
 	{
-		unsigned int normalIndex = face.normalIndex[i];
-		out_NI.push_back(normalIndex);
+		unsigned int normalIndex = face.normalIndex[i];		// Get the index
+		temp_normal = vectorNormals[normalIndex];			// Get the normal at the index
+		normal_out.push_back(temp_normal);					// Push normal to the output array
+		cout << "Normal stored in output array" << endl;
 	}
+
+	// Free up memory (maybe)
+	//delete[] & vICount, tICount, nICount, temp_vector, temp_texture, temp_normal;
+	//cout << vICount;
+	cout << "Face storage process complete" << endl;
 }
 
 void Parser::parseObj()
@@ -177,6 +198,7 @@ void Parser::parseObj()
 					} 
 				}
 			}
+			storeFace(face);
 			
 		}
 		else
