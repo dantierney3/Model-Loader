@@ -49,26 +49,96 @@ void storeFace(Face face) // Stores the face data in the main array
 	glm::vec2 temp_texture;
 	glm::vec3 temp_normal;
 
-	for (int i = 0; i < vICount; i++) // Stores the vertex index of the current face
+	if (vICount == 3 && tICount == 3 && nICount == 3)
 	{
-		unsigned int vertexIndex = face.vertexIndex[i];		// Get the index
-		temp_vector = vectors[vertexIndex];					// Get the vector at the index
-		vertex_out.push_back(temp_vector);					// Push vector to output array
-		cout << "Vector stored in output array" << endl;
+		cout << "Face is a triangle" << endl;
+
+		temp_vector = vectors[face.vertexIndex[0]];
+		temp_texture = vectorTextures[face.textureIndex[0]];
+		temp_normal = vectorNormals[face.normalIndex[0]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[1]];
+		temp_texture = vectorTextures[face.textureIndex[1]];
+		temp_normal = vectorNormals[face.normalIndex[1]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[2]];
+		temp_texture = vectorTextures[face.textureIndex[2]];
+		temp_normal = vectorNormals[face.normalIndex[2]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		cout << "Face stored!" << endl;
 	}
-	for (int i = 0; i < tICount; i++)	// Stores the texture index for the current face
+	else if (vICount == 4 && tICount == 4 && nICount == 4)
 	{
-		unsigned int textureIndex = face.textureIndex[i];	// Get the index
-		temp_texture = vectorTextures[textureIndex];		// Get the Texture at the index
-		texture_out.push_back(temp_texture);				// Push texture to output array
-		cout << "Texture stoed in output array" << endl;
+		cout << "Face is a square, triangulating..." << endl;
+
+		temp_vector = vectors[face.vertexIndex[0]];
+		temp_texture = vectorTextures[face.textureIndex[0]];
+		temp_normal = vectorNormals[face.normalIndex[0]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[1]];
+		temp_texture = vectorTextures[face.textureIndex[1]];
+		temp_normal = vectorNormals[face.normalIndex[1]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[2]];
+		temp_texture = vectorTextures[face.textureIndex[2]];
+		temp_normal = vectorNormals[face.normalIndex[2]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		cout << "First triangle stored!" << endl;
+
+		temp_vector = vectors[face.vertexIndex[0]];
+		temp_texture = vectorTextures[face.textureIndex[0]];
+		temp_normal = vectorNormals[face.normalIndex[0]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[2]];
+		temp_texture = vectorTextures[face.textureIndex[2]];
+		temp_normal = vectorNormals[face.normalIndex[2]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		temp_vector = vectors[face.vertexIndex[3]];
+		temp_texture = vectorTextures[face.textureIndex[3]];
+		temp_normal = vectorNormals[face.normalIndex[3]];
+
+		vertex_out.push_back(temp_vector);
+		texture_out.push_back(temp_texture);
+		normal_out.push_back(temp_normal);
+
+		cout << "Second triangle stored!" << endl;
+		cout << "Face stored!" << endl;
 	}
-	for (int i = 0; i < nICount; i++)	// Stores the normal index for the current face
+	else
 	{
-		unsigned int normalIndex = face.normalIndex[i];		// Get the index
-		temp_normal = vectorNormals[normalIndex];			// Get the normal at the index
-		normal_out.push_back(temp_normal);					// Push normal to the output array
-		cout << "Normal stored in output array" << endl;
+		cout << "File is corrupt or missing data" << endl;
 	}
 
 	// Free up memory (maybe)
