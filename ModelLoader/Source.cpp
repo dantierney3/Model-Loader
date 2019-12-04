@@ -3,6 +3,13 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include "Parser.h"
+#include <vector>
+#include "glm/glm.hpp"
+#include <string>
+
+using namespace std;
+
+
 
 // Resizes the openGL viewport if the user changes the size of the window
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -84,12 +91,58 @@ void renderWindowColor(GLFWwindow* window)
 
 int main() {
 
+	// vectors for render data
+	std::vector < glm::vec3 > vertices;
+	std::vector < glm::vec2 > vTextures;
+	std::vector < glm::vec3 > vNormals;
+	
+
 	// Calls method 'init' to create the window
 	GLFWwindow* window = init(1080, 720);
 
-	// Parse .obj file
-	Parser parser;
-	parser.parseObj();
+	// Loading loop, used to load n files into the program
+	bool allObjectsLoaded;
+	allObjectsLoaded = false;
+
+	do
+	{
+		// Parse .obj file
+		Parser parser;
+		parser.parseObj();
+
+		// Check if the user has finished loading files
+		
+		bool correctInput;
+		correctInput = false;
+		do
+		{
+			cout << string(20, '\n');
+			cout << "Would you like to load another file?" << endl;
+			cout << "Y  //  N" << endl;
+			string input;
+			getline(cin, input);
+
+			if (input == "Y" || input == "y")
+			{
+				// Do Nothing
+				correctInput = true;
+			}
+			else if (input == "N" || input == "n")
+			{
+				// break loop
+				allObjectsLoaded = true;
+				correctInput = true;
+				cout << "All objects loaded!" << endl;
+			}
+			else
+			{
+				cout << "Incorrect responce, please enter:" << endl;
+				cout << "(  Y  )  if you wish to load another file" << endl;
+				cout << "(  N  )  if you do not wish to load another file" << endl;
+			}
+		} while (correctInput == false);
+	} while (allObjectsLoaded == false);
+
 
 	// Beginning of render loop
 	while (!glfwWindowShouldClose(window))

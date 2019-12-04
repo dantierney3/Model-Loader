@@ -279,3 +279,20 @@ void Parser::parseObj()
 	
 }
 
+//vector<glm::vec3> Parser::getVertex() // returns the vertex vector
+//{
+//	return vertex_out;
+//}
+//
+//vector<glm::vec2> Parser::getVTextures() // returns the textures vector
+//{
+//	return texture_out;
+//}
+//
+//vector<glm::vec3> Parser::getVNormals() // returns the normals vector
+//{
+//	return normal_out;
+//}
+
+
+
