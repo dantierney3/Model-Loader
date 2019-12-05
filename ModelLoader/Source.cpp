@@ -3,6 +3,20 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include "Parser.h"
+#include <string>
+#include <vector>
+#include "glm/glm.hpp"
+using namespace std;
+
+struct Object
+{
+	vector<glm::vec3> vertex;
+	vector<glm::vec2> texture;
+	vector<glm::vec3> normal;
+};
+
+// Vector to store Objects
+vector<Object> object_vector;
 
 // Resizes the openGL viewport if the user changes the size of the window
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -87,9 +101,59 @@ int main() {
 	// Calls method 'init' to create the window
 	GLFWwindow* window = init(1080, 720);
 
-	// Parse .obj file
-	Parser parser;
-	parser.parseObj();
+	// Object loading loop
+	bool allObjectsLoaded;
+	allObjectsLoaded = false;
+
+	do
+	{
+		Object current_object;
+
+		// Parse .obj file
+		Parser parser;
+		parser.parseObj();
+
+		// Check if the user has finished loading files
+		
+		bool correctInput;
+		correctInput = false;
+		do
+		{
+			cout << string(20, '\n');
+			cout << "Would you like to load another file?" << endl;
+			cout << "Y  //  N" << endl;
+			string input;
+			getline(cin, input);
+
+			if (input == "Y" || input == "y")
+			{
+				// Do Nothing
+				correctInput = true;
+			}
+			else if (input == "N" || input == "n")
+			{
+				// break loop
+				allObjectsLoaded = true;
+				correctInput = true;
+				cout << "All objects loaded!" << endl;
+			}
+			else
+			{
+				cout << "Incorrect responce, please enter:" << endl;
+				cout << "(  Y  )  if you wish to load another file" << endl;
+				cout << "(  N  )  if you do not wish to load another file" << endl;
+			}
+		} while (correctInput == false);
+
+		// Store loaded object here -->
+		current_object.vertex = parser.returnVertex();
+		current_object.texture = parser.returnTexture();
+		current_object.normal = parser.returnNormal();
+		object_vector.push_back(current_object);
+
+	} while (allObjectsLoaded == false);
+
+	int num_of_obj = object_vector.size();
 
 	// Beginning of render loop
 	while (!glfwWindowShouldClose(window))
@@ -99,6 +163,16 @@ int main() {
 
 		// Render commands here -->
 		renderWindowColor(window);
+
+		// Iterate through each object stored
+		for (int i = 0; i < num_of_obj; i++)
+		{
+			Object load; // temp Object
+			load = object_vector[i]; // assign current object
+
+			glBufferData(GL_ARRAY_BUFFER, load.vertex.size() * sizeof(glm::vec3), &load.vertex[0], GL_STATIC_DRAW);
+			glBufferData(GL_TEXTURE_BUFFER, load.texture.size() * sizeof(glm::vec2), &load.texture[0], GL_STATIC_DRAW);
+		}
 
 		// Swap colour buffer
 		glfwSwapBuffers(window);
